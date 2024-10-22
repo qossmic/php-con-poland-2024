@@ -1,0 +1,17 @@
+{
+    "name": "qossmic/phpcon-2024",
+    "autoload": {
+        "psr-4": {
+            "Workshop\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.3"
+    },
+    "authors": [
+        {
+            "name": "Oliver Kossin",
+            "email": "oliver.kossin@qossmic.com"
+        }
+    ]
+}

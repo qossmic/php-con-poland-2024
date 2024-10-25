@@ -55,13 +55,16 @@ class StarfleetCommand extends Starfleet
     /**
      * @throws \ReflectionException
      */
-    private function make(self $container, $id)
+    private function make(self $container, $id, $parameters = [])
     {
         if ($container->hasRegistration($id)) {
             $registration = $container->getRegistration($id);
             $id = $registration->getClass();
 
             foreach ($registration->getArguments() as $key => $argument) {
+                if ($argument instanceof Reference) {
+                    $parameters[$key] = $container->get($argument->__toString());
+                }
                 if (is_string($argument)) {
                     $parameters[$key] = $argument;
                 }
@@ -85,6 +88,8 @@ class StarfleetCommand extends Starfleet
             }
             $i++;
         }
+
+        /** todo many agruments check */
 
         return $classReflection->newInstance(...$dependencies);
     }

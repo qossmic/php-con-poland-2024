@@ -1,17 +1,22 @@
 <?php
 
-use Workshop\Starfleet\Ships\ExplorationVessel\Galaxy;
-use Workshop\Starfleet\Ships\ExplorationVessel\Intrepid;
-
 error_reporting(E_ALL ^ E_DEPRECATED);
+
+use Workshop\Starfleet\Ships\ExplorationVessel\Galaxy;
+use Workshop\Starfleet\StarfleetCommand\StarfleetCommand;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$starfleet = new Workshop\Starfleet\Starfleet();
-$starfleet->set('NCC 1701 D', Galaxy::class, ['Enterprise', 'NCC-1701 D']);
-$starfleet->set('NCC 1701 E', Galaxy::class, ['Enterprise', 'NCC-1701 E']);
-$starfleet->set('NCC 1701 F', Galaxy::class, ['Enterprise', 'NCC-1701 F']);
-$starfleet->set('NX-01', Intrepid::class);
+$starfleet = new StarfleetCommand();
+
+$starfleet->register('NCC-1701 D', Galaxy::class,)
+    ->addArgument('NCC-1701 D')
+    ->addArgument('Enterprise');
+$starfleet->register('NCC-71832', Galaxy::class)
+    ->addArgument('NCC-71832')
+    ->addArgument('Odyssey');
 
 
-dd($starfleet);
+
+dump($starfleet->get('NCC-71832'));
+dump($starfleet);

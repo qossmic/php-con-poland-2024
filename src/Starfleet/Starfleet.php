@@ -3,15 +3,18 @@
 namespace Workshop\Starfleet;
 
 use Psr\Container\ContainerInterface;
-use Workshop\Starfleet\Device\Warp;
 
+
+/** Normal known as Container */
 class Starfleet implements ContainerInterface
 {
+
     private array $starfleet = [];
 
-    public function set(string $id, string $service, array $config = [])
+
+    public function set(string $id, ?object $service)
     {
-        $this->starfleet[$id] = $this->make($service, $config);
+        $this->starfleet[$id] = $service;
     }
 
     public function get(string $id)
@@ -24,28 +27,4 @@ class Starfleet implements ContainerInterface
         return isset($this->starfleet[$id]);
     }
 
-    public function make(string $service, array $config = [])
-    {
-
-        $classReflection = new \ReflectionClass($service);
-
-        $constructorParams = $classReflection->getConstructor() ? $classReflection->getConstructor()->getParameters() : [];
-        $dependencies = [];
-
-        $i = 0;
-        foreach ($constructorParams as $constructorParam) {
-            if (!$constructorParam->getType()?->isBuiltin()) {
-                if (!$this->has($constructorParam->getType()?->getName())) {
-                    $this->set($constructorParam->getType()?->getName(), $constructorParam->getType()?->getName(), []);
-                }
-                array_push($dependencies, $this->get($constructorParam->getType()?->getName()));
-            } else {
-                array_push($dependencies, $config[$i]);
-            }
-            $i++;
-        }
-
-        return $classReflection->newInstance(... $dependencies);
-
-    }
 }
